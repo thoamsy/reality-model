@@ -9,9 +9,10 @@ import SwiftUI
 
 @main
 struct RealModelApp: App {
-    var body: some Scene {
-        WindowGroup {
-            ContentView()
-        }
+  var body: some Scene {
+    WindowGroup {
+      ContentView()
+        .frame(minWidth: 300, minHeight: 300)
     }
+  }
 }

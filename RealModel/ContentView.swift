@@ -11,7 +11,7 @@ struct ContentView: View {
     var body: some View {
       NavigationView {
         DropView()
-          .navigationTitle("lalla")
+          .navigationTitle("RealModel")
       }
     }
 }

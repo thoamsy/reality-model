@@ -12,6 +12,8 @@
 		59756B742732C5C8000D8752 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 59756B732732C5C8000D8752 /* Assets.xcassets */; };
 		59756B772732C5C8000D8752 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 59756B762732C5C8000D8752 /* Preview Assets.xcassets */; };
 		59756B7F2732C5EC000D8752 /* DropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59756B7E2732C5EC000D8752 /* DropView.swift */; };
+		59756B8127341583000D8752 /* ThumbnailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59756B8027341583000D8752 /* ThumbnailView.swift */; };
+		59F8188927341AB9004E62B9 /* ThumbnailGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59F8188827341AB9004E62B9 /* ThumbnailGrid.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +24,8 @@
 		59756B762732C5C8000D8752 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		59756B782732C5C8000D8752 /* RealModel.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RealModel.entitlements; sourceTree = "<group>"; };
 		59756B7E2732C5EC000D8752 /* DropView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropView.swift; sourceTree = "<group>"; };
+		59756B8027341583000D8752 /* ThumbnailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbnailView.swift; sourceTree = "<group>"; };
+		59F8188827341AB9004E62B9 /* ThumbnailGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbnailGrid.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,12 +58,14 @@
 		59756B6E2732C5C7000D8752 /* RealModel */ = {
 			isa = PBXGroup;
 			children = (
+				59F8188827341AB9004E62B9 /* ThumbnailGrid.swift */,
 				59756B6F2732C5C7000D8752 /* RealModelApp.swift */,
 				59756B712732C5C7000D8752 /* ContentView.swift */,
 				59756B732732C5C8000D8752 /* Assets.xcassets */,
 				59756B782732C5C8000D8752 /* RealModel.entitlements */,
 				59756B752732C5C8000D8752 /* Preview Content */,
 				59756B7E2732C5EC000D8752 /* DropView.swift */,
+				59756B8027341583000D8752 /* ThumbnailView.swift */,
 			);
 			path = RealModel;
 			sourceTree = "<group>";
@@ -142,7 +148,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				59F8188927341AB9004E62B9 /* ThumbnailGrid.swift in Sources */,
 				59756B722732C5C7000D8752 /* ContentView.swift in Sources */,
+				59756B8127341583000D8752 /* ThumbnailView.swift in Sources */,
 				59756B702732C5C7000D8752 /* RealModelApp.swift in Sources */,
 				59756B7F2732C5EC000D8752 /* DropView.swift in Sources */,
 			);
