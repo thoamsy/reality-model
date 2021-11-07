@@ -14,6 +14,7 @@
 		59756B7F2732C5EC000D8752 /* DropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59756B7E2732C5EC000D8752 /* DropView.swift */; };
 		59756B8127341583000D8752 /* ThumbnailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59756B8027341583000D8752 /* ThumbnailView.swift */; };
 		59F8188927341AB9004E62B9 /* ThumbnailGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59F8188827341AB9004E62B9 /* ThumbnailGrid.swift */; };
+		59F8188D2737D72D004E62B9 /* PhotogrammetrySessionConfigForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59F8188C2737D72D004E62B9 /* PhotogrammetrySessionConfigForm.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		59756B7E2732C5EC000D8752 /* DropView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropView.swift; sourceTree = "<group>"; };
 		59756B8027341583000D8752 /* ThumbnailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbnailView.swift; sourceTree = "<group>"; };
 		59F8188827341AB9004E62B9 /* ThumbnailGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbnailGrid.swift; sourceTree = "<group>"; };
+		59F8188C2737D72D004E62B9 /* PhotogrammetrySessionConfigForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotogrammetrySessionConfigForm.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +68,7 @@
 				59756B752732C5C8000D8752 /* Preview Content */,
 				59756B7E2732C5EC000D8752 /* DropView.swift */,
 				59756B8027341583000D8752 /* ThumbnailView.swift */,
+				59F8188C2737D72D004E62B9 /* PhotogrammetrySessionConfigForm.swift */,
 			);
 			path = RealModel;
 			sourceTree = "<group>";
@@ -152,6 +155,7 @@
 				59756B722732C5C7000D8752 /* ContentView.swift in Sources */,
 				59756B8127341583000D8752 /* ThumbnailView.swift in Sources */,
 				59756B702732C5C7000D8752 /* RealModelApp.swift in Sources */,
+				59F8188D2737D72D004E62B9 /* PhotogrammetrySessionConfigForm.swift in Sources */,
 				59756B7F2732C5EC000D8752 /* DropView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

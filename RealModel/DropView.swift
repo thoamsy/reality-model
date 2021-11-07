@@ -17,7 +17,10 @@ struct DropView: View {
   var body: some View {
     NavigationView {
       if (contentURLs != nil) {
-        ThumbnailGrid(contentURLs: $contentURLs)
+        VStack {
+          ThumbnailGrid(contentURLs: $contentURLs)
+          PhotogrammetrySessionConfigForm()
+        }
       } else {
         HStack {
           VStack {
