@@ -10,6 +10,7 @@ import RealityKit
 
 struct RunButton: View {
   var folderURL: URL?
+  var progress: Binding<Double>
 
   @AppStorage("featureSensitivity") var featureSensitivity = PhotogrammetrySession.Configuration.FeatureSensitivity.normal
   @AppStorage("sampleOrdering") var sampleOrdering = PhotogrammetrySession.Configuration.SampleOrdering.unordered
@@ -29,8 +30,13 @@ struct RunButton: View {
   @State private var maybeSession: PhotogrammetrySession?
 
 
-  init(folderURL: URL?) {
+  init(folderURL: URL?, progress: Binding<Double>) {
     self.folderURL = folderURL
+    self.progress = progress
+  }
+
+  func resetProgress() {
+    progress.wrappedValue = 0
   }
 
   func run() {
@@ -54,16 +60,23 @@ struct RunButton: View {
               canExport = true
               // RealityKit has processed all requests.
             case .requestError(let request, let error):
+              print("Error: ")
               print(request, error)
+              resetProgress()
+              maybeSession = nil
               // Request encountered an error.
             case .requestComplete(let request, let result):
-              print(request, result)
+              print("complete, \(request), \(result)")
+              resetProgress()
+              maybeSession = nil
               // RealityKit has finished processing a request.
             case .requestProgress(let request, let fractionComplete):
-              print(request, fractionComplete)
+              print("requestProgress, \(request), \(fractionComplete)")
+              progress.wrappedValue = fractionComplete
               // Periodic progress update. Update UI here.
-              //              case .inputComplete:
-              // Ingestion of images is complete and processing begins.
+            case .inputComplete:
+              print("input complete")
+//               Ingestion of images is complete and processing begins.
             case .invalidSample(let id, let reason):
               print(id, reason)
               // RealityKit deemed a sample invalid and didn't use it.
@@ -75,10 +88,10 @@ struct RunButton: View {
               //                // resource constraints.
             case .processingCancelled:
               print("Cancel")
-              // Processing was canceled.
+              resetProgress()
+              maybeSession = nil
             @unknown default:
-              print("HES")
-              // Unrecognized output.
+              print("Do nothing")
           }
         }
       } catch {
@@ -104,13 +117,14 @@ struct RunButton: View {
     Button(action: {
       if maybeSession != nil && maybeSession!.isProcessing {
         maybeSession?.cancel()
-        maybeSession = nil
+        return
       }
 
       run()
     }) {
       Label("Run", systemImage: (maybeSession?.isProcessing ?? false) ? "stop.circle" : "play").labelStyle(.iconOnly)
     }
+//    .fileExporter(isPresented: $canExport, document: nil, contentType: .usdz, defaultFilename: "model.usdz", onCompletion: {})
   }
 }
 
