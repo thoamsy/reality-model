@@ -35,7 +35,7 @@ struct DropView: View {
                 }) {
                   Image(systemName: "arrow.backward")
                 }.disabled(progress > 0)
-                RunButton(folderURL: folderURL, progress: $progress)
+                RunButton(folderURL: $folderURL, progress: $progress)
               }
             }.frame(minWidth: 600)
           if progress > 0 {

@@ -9,7 +9,6 @@ import SwiftUI
 import RealityKit
 
 struct RunButton: View {
-  var folderURL: URL?
   var outputName = "model"
   var progress: Binding<Double>
 
@@ -17,6 +16,7 @@ struct RunButton: View {
   @AppStorage("sampleOrdering") var sampleOrdering = PhotogrammetrySession.Configuration.SampleOrdering.unordered
   @AppStorage("detailLevel") var detailLevel = PhotogrammetrySession.Request.Detail.reduced
 
+  @Binding var folderURL: URL?
   @State private var canExport = false
 
   func sessionConfiguration() -> PhotogrammetrySession.Configuration {
@@ -31,8 +31,8 @@ struct RunButton: View {
   @State private var maybeSession: PhotogrammetrySession?
 
 
-  init(folderURL: URL?, progress: Binding<Double>) {
-    self.folderURL = folderURL
+  init(folderURL: Binding<URL?>, progress: Binding<Double>) {
+    _folderURL = folderURL
     self.progress = progress
   }
 
@@ -103,7 +103,7 @@ struct RunButton: View {
 
     withExtendedLifetime((session, waiter)) {
       do {
-      let outputURL = URL(fileURLWithPath: fileName)
+      let outputURL = URL(fileURLWithPath: fileName + ".usdz")
 
       let request = PhotogrammetrySession.Request.modelFile(url: outputURL, detail: detailLevel)
       try session.process(requests: [request])
@@ -127,7 +127,7 @@ struct RunButton: View {
 
       run()
     }) {
-      Label("Run", systemImage: (maybeSession?.isProcessing ?? false) ? "stop.circle" : "play").labelStyle(.iconOnly)
+      Label("Run", systemImage: (maybeSession?.isProcessing ?? false) ? "stop.circle" : "play")
     }
     .fileExporter(
       isPresented: $canExport,
@@ -136,6 +136,8 @@ struct RunButton: View {
       defaultFilename: fileName,
       onCompletion: { $0 }
     )
+    .keyboardShortcut((maybeSession?.isProcessing ?? false) ? "S" : "R", modifiers: [.command])
+    .disabled(folderURL == nil)
   }
 }
 

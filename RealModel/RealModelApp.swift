@@ -13,6 +13,8 @@ struct RealModelApp: App {
     WindowGroup {
       ContentView()
         .frame(minWidth: 500, minHeight: 300)
+    }.commands {
+      RunCommands()
     }
     Settings {
       SettingView()

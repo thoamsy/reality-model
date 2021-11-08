@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		590D8DA827390A03005FB6AB /* ExportTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 590D8DA727390A03005FB6AB /* ExportTest.swift */; };
+		590D8DAC273911FD005FB6AB /* RunCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 590D8DAB273911FD005FB6AB /* RunCommands.swift */; };
 		59756B702732C5C7000D8752 /* RealModelApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59756B6F2732C5C7000D8752 /* RealModelApp.swift */; };
 		59756B722732C5C7000D8752 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59756B712732C5C7000D8752 /* ContentView.swift */; };
 		59756B742732C5C8000D8752 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 59756B732732C5C8000D8752 /* Assets.xcassets */; };
@@ -23,6 +24,7 @@
 
 /* Begin PBXFileReference section */
 		590D8DA727390A03005FB6AB /* ExportTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportTest.swift; sourceTree = "<group>"; };
+		590D8DAB273911FD005FB6AB /* RunCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunCommands.swift; sourceTree = "<group>"; };
 		59756B6C2732C5C7000D8752 /* RealModel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RealModel.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		59756B6F2732C5C7000D8752 /* RealModelApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealModelApp.swift; sourceTree = "<group>"; };
 		59756B712732C5C7000D8752 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -57,6 +59,14 @@
 			path = Test;
 			sourceTree = "<group>";
 		};
+		590D8DAA273911F2005FB6AB /* Menu */ = {
+			isa = PBXGroup;
+			children = (
+				590D8DAB273911FD005FB6AB /* RunCommands.swift */,
+			);
+			path = Menu;
+			sourceTree = "<group>";
+		};
 		59756B632732C5C7000D8752 = {
 			isa = PBXGroup;
 			children = (
@@ -76,6 +86,7 @@
 		59756B6E2732C5C7000D8752 /* RealModel */ = {
 			isa = PBXGroup;
 			children = (
+				590D8DAA273911F2005FB6AB /* Menu */,
 				59F818932738E96E004E62B9 /* View */,
 				59F8188E2738DA75004E62B9 /* Scene */,
 				59756B6F2732C5C7000D8752 /* RealModelApp.swift */,
@@ -194,6 +205,7 @@
 				59F818922738DBA5004E62B9 /* SettingView.swift in Sources */,
 				59756B702732C5C7000D8752 /* RealModelApp.swift in Sources */,
 				59756B7F2732C5EC000D8752 /* DropView.swift in Sources */,
+				590D8DAC273911FD005FB6AB /* RunCommands.swift in Sources */,
 				590D8DA827390A03005FB6AB /* ExportTest.swift in Sources */,
 				59F8189727390029004E62B9 /* USDZDocument.swift in Sources */,
 				59F818902738DA94004E62B9 /* PhotogrammetrySessionSetting.swift in Sources */,
