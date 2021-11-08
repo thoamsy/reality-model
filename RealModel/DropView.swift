@@ -18,24 +18,22 @@ struct DropView: View {
   var body: some View {
     NavigationView {
       if (contentURLs != nil) {
-        VStack {
-          ThumbnailGrid(contentURLs: $contentURLs)
-          PhotogrammetrySessionConfigForm()
-        }
+        ThumbnailGrid(contentURLs: $contentURLs)
       } else {
         HStack {
-          VStack {
-            Image(systemName: "photo.on.rectangle.angled")
-              .font(.system(size: 120))
-            Text("Drop to here")
-              .font(.largeTitle)
-          }
-          .frame(width: 256, height: 256)
-          .padding()
-          .onDrop(of: [.fileURL], delegate: ModelDirectoryDelegate(contentURLs: $contentURLs))
-          .onTapGesture {
+          Button(action: {
             isShow = true
+          }) {
+            VStack {
+              Image(systemName: "photo.on.rectangle.angled")
+                .font(.system(size: 120))
+              Text("Drop to here")
+                .font(.largeTitle)
+            }
+            .frame(width: 256, height: 256)
           }
+          .buttonStyle(.borderless)
+          .onDrop(of: [.fileURL], delegate: ModelDirectoryDelegate(contentURLs: $contentURLs))
           .fileImporter(isPresented: $isShow, allowedContentTypes: [.fileURL, .directory]) { result in
             switch result {
               case .success(let dirURL):

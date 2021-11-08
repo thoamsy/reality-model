@@ -1,5 +1,5 @@
 //
-//  PhotogrammetrySessionConfigForm.swift
+//  PhotogrammetrySessionSetting.swift
 //  RealModel
 //
 //  Created by yk on 2021/11/7.
@@ -8,7 +8,7 @@
 import SwiftUI
 import RealityKit
 
-struct PhotogrammetrySessionConfigForm: View {
+struct PhotogrammetrySessionSetting: View {
   @AppStorage("featureSensitivity") var featureSensitivity = PhotogrammetrySession.Configuration.FeatureSensitivity.normal
   @AppStorage("sampleOrdering") var sampleOrdering = PhotogrammetrySession.Configuration.SampleOrdering.unordered
   @AppStorage("detailLevel") var detailLevel = PhotogrammetrySession.Request.Detail.reduced
@@ -56,7 +56,6 @@ struct PhotogrammetrySessionConfigForm: View {
       }.pickerStyle(.inline)
       Text(featureSensitivityComment)
         .foregroundColor(.secondary)
-        .frame(width: 240)
 
       Picker("Detail Level", selection: $detailLevel) {
         Text("Preview").tag(PhotogrammetrySession.Request.Detail.preview)
@@ -64,8 +63,10 @@ struct PhotogrammetrySessionConfigForm: View {
         Text("Medium").tag(PhotogrammetrySession.Request.Detail.medium)
         Text("Full").tag(PhotogrammetrySession.Request.Detail.full)
         Text("Raw").tag(PhotogrammetrySession.Request.Detail.raw)
-      }.pickerStyle(.automatic)
+      }
+        .pickerStyle(.automatic)
         .frame(width: 200)
+
       VStack(alignment: .leading) {
         Text("Higher levels of detail take longer, require more memory and processing power to generate, and create objects with more complex geometry. ")
           .lineLimit(3)
@@ -78,7 +79,7 @@ struct PhotogrammetrySessionConfigForm: View {
 
 struct PhotogrammetrySessionConfigForm_Previews: PreviewProvider {
   static var previews: some View {
-    PhotogrammetrySessionConfigForm()
+    PhotogrammetrySessionSetting()
   }
 }
 

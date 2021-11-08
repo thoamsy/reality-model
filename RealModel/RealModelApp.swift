@@ -12,7 +12,11 @@ struct RealModelApp: App {
   var body: some Scene {
     WindowGroup {
       ContentView()
-        .frame(minWidth: 300, minHeight: 300)
-    }.windowToolbarStyle(.expanded)
+        .frame(minWidth: 500, minHeight: 300)
+    }
+    Settings {
+      SettingView()
+        .frame(minWidth: 500, minHeight: 300)
+    }
   }
 }
