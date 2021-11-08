@@ -47,13 +47,13 @@ struct PhotogrammetrySessionSetting: View {
       Picker("Sample Ordering", selection: $sampleOrdering) {
         Text("Unordered").tag(PhotogrammetrySession.Configuration.SampleOrdering.unordered)
         Text("Sequential").tag(PhotogrammetrySession.Configuration.SampleOrdering.sequential)
-      }.pickerStyle(.inline)
+      }.pickerStyle(.radioGroup)
       Text(sampleOrderingComment)
         .foregroundColor(.secondary)
       Picker("Feature Sensitivity", selection: $featureSensitivity) {
         Text("Normal").tag(PhotogrammetrySession.Configuration.FeatureSensitivity.normal)
         Text("High").tag(PhotogrammetrySession.Configuration.FeatureSensitivity.high)
-      }.pickerStyle(.inline)
+      }.pickerStyle(.radioGroup)
       Text(featureSensitivityComment)
         .foregroundColor(.secondary)
 

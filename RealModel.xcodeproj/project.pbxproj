@@ -16,6 +16,7 @@
 		59F8188927341AB9004E62B9 /* ThumbnailGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59F8188827341AB9004E62B9 /* ThumbnailGrid.swift */; };
 		59F818902738DA94004E62B9 /* PhotogrammetrySessionSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59F8188F2738DA94004E62B9 /* PhotogrammetrySessionSetting.swift */; };
 		59F818922738DBA5004E62B9 /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59F818912738DBA5004E62B9 /* SettingView.swift */; };
+		59F818952738EA3A004E62B9 /* RunButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59F818942738EA3A004E62B9 /* RunButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		59F8188827341AB9004E62B9 /* ThumbnailGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbnailGrid.swift; sourceTree = "<group>"; };
 		59F8188F2738DA94004E62B9 /* PhotogrammetrySessionSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotogrammetrySessionSetting.swift; sourceTree = "<group>"; };
 		59F818912738DBA5004E62B9 /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
+		59F818942738EA3A004E62B9 /* RunButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,15 +64,13 @@
 		59756B6E2732C5C7000D8752 /* RealModel */ = {
 			isa = PBXGroup;
 			children = (
+				59F818932738E96E004E62B9 /* View */,
 				59F8188E2738DA75004E62B9 /* Scene */,
-				59F8188827341AB9004E62B9 /* ThumbnailGrid.swift */,
 				59756B6F2732C5C7000D8752 /* RealModelApp.swift */,
 				59756B712732C5C7000D8752 /* ContentView.swift */,
 				59756B732732C5C8000D8752 /* Assets.xcassets */,
 				59756B782732C5C8000D8752 /* RealModel.entitlements */,
 				59756B752732C5C8000D8752 /* Preview Content */,
-				59756B7E2732C5EC000D8752 /* DropView.swift */,
-				59756B8027341583000D8752 /* ThumbnailView.swift */,
 			);
 			path = RealModel;
 			sourceTree = "<group>";
@@ -90,6 +90,17 @@
 				59F818912738DBA5004E62B9 /* SettingView.swift */,
 			);
 			path = Scene;
+			sourceTree = "<group>";
+		};
+		59F818932738E96E004E62B9 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				59F8188827341AB9004E62B9 /* ThumbnailGrid.swift */,
+				59756B7E2732C5EC000D8752 /* DropView.swift */,
+				59756B8027341583000D8752 /* ThumbnailView.swift */,
+				59F818942738EA3A004E62B9 /* RunButton.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -165,6 +176,7 @@
 				59F8188927341AB9004E62B9 /* ThumbnailGrid.swift in Sources */,
 				59756B722732C5C7000D8752 /* ContentView.swift in Sources */,
 				59756B8127341583000D8752 /* ThumbnailView.swift in Sources */,
+				59F818952738EA3A004E62B9 /* RunButton.swift in Sources */,
 				59F818922738DBA5004E62B9 /* SettingView.swift in Sources */,
 				59756B702732C5C7000D8752 /* RealModelApp.swift in Sources */,
 				59756B7F2732C5EC000D8752 /* DropView.swift in Sources */,

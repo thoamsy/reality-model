@@ -9,24 +9,11 @@ import SwiftUI
 
 struct ThumbnailGrid: View {
   @Binding var contentURLs: [URL]?
+
   let thumbnailSize: Double = 128
   
   var body: some View {
     VStack {
-      HStack {
-        Button(role: .cancel, action: {
-          contentURLs = nil
-        }) {
-          Image(systemName: "arrow.backward")
-            .font(/*@START_MENU_TOKEN@*/.largeTitle/*@END_MENU_TOKEN@*/)
-            .foregroundColor(.white)
-        }
-        .frame(width: 72, height: 44)
-          .buttonStyle(.borderless)
-          .background(Color(NSColor.secondaryLabelColor))
-          .clipShape(Circle())
-        Spacer()
-      }
       if (contentURLs != nil) {
         ScrollView {
           LazyVGrid(columns: Array(repeating: .init(.fixed(thumbnailSize)), count: 4)) {
