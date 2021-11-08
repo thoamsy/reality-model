@@ -12,6 +12,7 @@ import AVFoundation
 
 struct DropView: View {
   @State private var contentURLs: [URL]?
+  @State var isShow = false
 
   @ViewBuilder
   var body: some View {
@@ -32,7 +33,24 @@ struct DropView: View {
           .frame(width: 256, height: 256)
           .padding()
           .onDrop(of: [.fileURL], delegate: ModelDirectoryDelegate(contentURLs: $contentURLs))
-        }.frame(width: 600)
+          .onTapGesture {
+            isShow = true
+          }
+          .fileImporter(isPresented: $isShow, allowedContentTypes: [.fileURL, .directory]) { result in
+            switch result {
+              case .success(let dirURL):
+                let result = ModelDirectoryDelegate.getFilesFromDirectoryURL(dirURL: dirURL)
+
+                if result.isEmpty {
+                  return
+                }
+                contentURLs = result
+
+              case .failure:
+                return
+            }
+          }
+        }.frame(minWidth: 500)
       }
     }
   }
@@ -40,7 +58,14 @@ struct DropView: View {
 
 struct ModelDirectoryDelegate: DropDelegate {
   @Binding var contentURLs: [URL]?
-  let fileExtension = Set(["mp4", "png", "hevc", "jpeg"])
+  static let fileExtension = Set(["mp4", "png", "hevc", "jpeg"])
+
+  static func getFilesFromDirectoryURL(dirURL: URL) -> [URL] {
+    let contents = try! FileManager.default.contentsOfDirectory(atPath: dirURL.path)
+    return contents
+      .map { content in dirURL.appendingPathComponent(content) }
+      .filter { ModelDirectoryDelegate.fileExtension.contains($0.pathExtension.lowercased()) }
+  }
 
   func performDrop(info: DropInfo) -> Bool {
     return info.itemProviders(for: [.fileURL]).first.flatMap { item in
@@ -49,19 +74,9 @@ struct ModelDirectoryDelegate: DropDelegate {
         guard let url = pathURL else {
           return
         }
-        do {
-          let contents = try FileManager.default.contentsOfDirectory(atPath: url.path)
-          let urls = contents
-            .map { content in url.appendingPathComponent(content) }
-            .filter { fileExtension.contains($0.pathExtension.lowercased()) }
-
-          if urls.isEmpty {
-            return
-          }
-          contentURLs = urls
-          print(urls)
-        } catch {
-          print(error)
+        let result = Self.getFilesFromDirectoryURL(dirURL: url)
+        if !result.isEmpty {
+          contentURLs = result
         }
       }
       return true

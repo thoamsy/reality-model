@@ -13,6 +13,6 @@ struct RealModelApp: App {
     WindowGroup {
       ContentView()
         .frame(minWidth: 300, minHeight: 300)
-    }
+    }.windowToolbarStyle(.expanded)
   }
 }

@@ -13,10 +13,19 @@ struct ThumbnailGrid: View {
   
   var body: some View {
     VStack {
-      Button(action: {
-        contentURLs = nil
-      }) {
-        Label("Remve", systemImage: "trash")
+      HStack {
+        Button(role: .cancel, action: {
+          contentURLs = nil
+        }) {
+          Image(systemName: "arrow.backward")
+            .font(/*@START_MENU_TOKEN@*/.largeTitle/*@END_MENU_TOKEN@*/)
+            .foregroundColor(.white)
+        }
+        .frame(width: 72, height: 44)
+          .buttonStyle(.borderless)
+          .background(Color(NSColor.secondaryLabelColor))
+          .clipShape(Circle())
+        Spacer()
       }
       if (contentURLs != nil) {
         ScrollView {
@@ -24,10 +33,10 @@ struct ThumbnailGrid: View {
             ForEach(contentURLs!, id: \.self) { url in
               ThumbnailView(fileURL: url, thumbnailSize: thumbnailSize)
             }
-          }.padding()
+          }
         }
       }
-    }
+    }.padding()
   }
 }
 

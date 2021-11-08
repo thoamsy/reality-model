@@ -17,7 +17,7 @@ struct PhotogrammetrySessionConfigForm: View {
     if featureSensitivity == .normal {
       return "The session uses the default algorithm to detect landmarks."
     } else {
-      return "The session uses a slower, more sensitive algorithm to detect landmarks."
+      return "The session uses a slower, more sensitive algorithm to dAccording to the product positioning, this device is left in the kitchen alone and supports voice control. So I think it's reasonable to play the next video automatically.etect landmarks."
     }
   }
 
