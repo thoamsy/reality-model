@@ -10,6 +10,7 @@ import RealityKit
 
 struct RunButton: View {
   var folderURL: URL?
+  var outputName = "model"
   var progress: Binding<Double>
 
   @AppStorage("featureSensitivity") var featureSensitivity = PhotogrammetrySession.Configuration.FeatureSensitivity.normal
@@ -102,7 +103,7 @@ struct RunButton: View {
 
     withExtendedLifetime((session, waiter)) {
       do {
-      let outputURL = URL(fileURLWithPath: "test.usdz")
+      let outputURL = URL(fileURLWithPath: fileName)
 
       let request = PhotogrammetrySession.Request.modelFile(url: outputURL, detail: detailLevel)
       try session.process(requests: [request])
@@ -111,6 +112,10 @@ struct RunButton: View {
         maybeSession = nil
       }
     }
+  }
+
+  var fileName: String {
+    "\(outputName)-\(detailLevel)"
   }
 
   var body: some View {
@@ -124,7 +129,13 @@ struct RunButton: View {
     }) {
       Label("Run", systemImage: (maybeSession?.isProcessing ?? false) ? "stop.circle" : "play").labelStyle(.iconOnly)
     }
-//    .fileExporter(isPresented: $canExport, document: nil, contentType: .usdz, defaultFilename: "model.usdz", onCompletion: {})
+    .fileExporter(
+      isPresented: $canExport,
+      document: USDZURLDocument(name: fileName),
+      contentType: .usdz,
+      defaultFilename: fileName,
+      onCompletion: { $0 }
+    )
   }
 }
 

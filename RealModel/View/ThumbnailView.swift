@@ -11,13 +11,12 @@ import AVFoundation
 struct ThumbnailView: View {
   var fileURL: URL
   var thumbnailSize: Double = 128
+  var thumbnail: Image?
 
-  // optimaze for just run once
-  func generateThumbnails(path: URL) -> Image? {
-    print(fileURL.lastPathComponent)
-    if (path.pathExtension == "mp4") {
+  func generateThumbnails(url: URL) -> Image? {
+    if (url.pathExtension == "mp4") {
       do {
-        let asset = AVURLAsset(url: path, options: nil)
+        let asset = AVURLAsset(url: url, options: nil)
         let imgGenerator = AVAssetImageGenerator(asset: asset)
         imgGenerator.appliesPreferredTrackTransform = true
 
@@ -30,16 +29,23 @@ struct ThumbnailView: View {
         return nil
       }
     } else {
-      if let img = NSImage(contentsOf: path) {
+      print(url.path)
+      if let img = NSImage(byReferencingFile: url.path), img.isValid {
         return Image(nsImage: img)
       }
       return nil
     }
   }
 
+  init(fileURL: URL, thumbnailSize: Double = 128.0) {
+    self.fileURL = fileURL
+    thumbnail = generateThumbnails(url: fileURL)
+    self.thumbnailSize = thumbnailSize
+  }
+
   var body: some View {
     VStack {
-      if let image = generateThumbnails(path: fileURL) {
+      if let image = thumbnail {
         image
           .resizable()
           .scaledToFit()
