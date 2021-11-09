@@ -11,7 +11,6 @@ import Combine
 
 @MainActor
 class Store: ObservableObject {
-  @Published var progress = 0.0
   @Published var errorMessage = ""
   @Published var folderURL: URL?
   @Published var contentURLs: [URL]?

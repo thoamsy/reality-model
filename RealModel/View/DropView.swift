@@ -1,18 +1,22 @@
-//
-//  DropView.swift
-//  RealModel
-//
-//  Created by yk on 2021/11/3.
-//
+  //
+  //  DropView.swift
+  //  RealModel
+  //
+  //  Created by yk on 2021/11/3.
+  //
 
 import SwiftUI
 import AppKit
 import AVFoundation
+import RealityKit
 
 
 struct DropView: View {
   @EnvironmentObject var store: Store
+  @AppStorage("detailLevel") var detailLevel = PhotogrammetrySession.Request.Detail.reduced
+
   @State var showFileImporter = false
+  @State var progress = 0.0
 
   var body: some View {
     VStack {
@@ -27,22 +31,24 @@ struct DropView: View {
                 }) {
                   Image(systemName: "arrow.backward")
                 }.disabled(store.isProgressing)
-                RunButton()
+                RunButton(progress: $progress)
               }
             }
             .frame(minWidth: 800)
           if store.isProgressing {
-            Rectangle()
-              .frame(width: .infinity, height: .infinity)
-              .background(Color.secondary)
-              .opacity(0.4)
-            ProgressView(value: store.progress) {
-              VStack {
-                Text("Task take long time, please be patient")
-                Text("Loading: \(store.progress * 100, specifier: "%.2f")%")
+            VStack {
+              Text(verbatim: "Generating \(detailLevel)")
+                .font(.headline)
+              ProgressView(value: progress) {
+                VStack {
+                  Text("Task take long time, please be patient")
+                  Text("Loading: \(progress * 100, specifier: "%.2f")%")
+                }.foregroundColor(.secondary)
               }
+              .progressViewStyle(CircularProgressViewStyle())
             }
-            .progressViewStyle(CircularProgressViewStyle())
+            .padding()
+            .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 8))
           }
         }
       } else {
@@ -114,7 +120,7 @@ struct ModelDirectoryDelegate: DropDelegate {
   }
 
   func dropUpdated(info: DropInfo) -> DropProposal? {
-    //    print(info)
+      //    print(info)
     return nil
   }
 

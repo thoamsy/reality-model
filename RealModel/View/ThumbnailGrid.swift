@@ -19,6 +19,7 @@ struct ThumbnailGrid: View {
           LazyVGrid(columns: Array(repeating: .init(.fixed(thumbnailSize)), count: 4)) {
             ForEach(contentURLs!, id: \.self) { url in
               ThumbnailView(fileURL: url, thumbnailSize: thumbnailSize)
+                .id(url)
             }
           }
         }

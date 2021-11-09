@@ -29,7 +29,6 @@ struct ThumbnailView: View {
         return nil
       }
     } else {
-      print(url.path)
       if let img = NSImage(byReferencingFile: url.path), img.isValid {
         return Image(nsImage: img)
       }

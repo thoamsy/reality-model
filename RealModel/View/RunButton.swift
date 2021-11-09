@@ -19,6 +19,7 @@ struct RunButton: View {
 
   @State private var canExport = false
   @State private var maybeSession: PhotogrammetrySession?
+  @Binding private var progress: Double
 
   func sessionConfiguration() -> PhotogrammetrySession.Configuration {
     var configuration = PhotogrammetrySession.Configuration()
@@ -29,11 +30,16 @@ struct RunButton: View {
     return configuration
   }
 
+  init(progress: Binding<Double>) {
+    _progress = progress
+  }
 
   func resetProgress() {
     maybeSession = nil
-    store.progress = 0
     store.isProgressing = false
+    DispatchQueue.main.async {
+      progress = 0
+    }
   }
 
   func run() {
@@ -68,7 +74,7 @@ struct RunButton: View {
               // RealityKit has finished processing a request.
             case .requestProgress(let request, let fractionComplete):
               print("requestProgress, \(request), \(fractionComplete)")
-              store.progress = fractionComplete
+              progress = fractionComplete
               // Periodic progress update. Update UI here.
             case .inputComplete:
               print("input complete")
@@ -114,14 +120,14 @@ struct RunButton: View {
 
   var body: some View {
     Button(action: {
-      if maybeSession != nil && maybeSession!.isProcessing {
+      if isProgress {
         maybeSession?.cancel()
         return
       }
 
       run()
     }) {
-      Label("Run", systemImage: (maybeSession?.isProcessing ?? false) ? "stop.circle" : "play")
+      Label(isProgress ? "Stop" : "Run", systemImage: (maybeSession?.isProcessing ?? false) ? "stop.circle" : "play")
     }
     .fileExporter(
       isPresented: $canExport,
@@ -130,8 +136,12 @@ struct RunButton: View {
       defaultFilename: fileName,
       onCompletion: { $0 }
     )
-    .keyboardShortcut((maybeSession?.isProcessing ?? false) ? "S" : "R", modifiers: [.command])
+    .keyboardShortcut(isProgress ? "S" : "R", modifiers: [.command])
     .disabled(store.folderURL == nil)
+  }
+
+  var isProgress: Bool {
+    maybeSession?.isProcessing ?? false
   }
 }
 
