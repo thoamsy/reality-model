@@ -15,14 +15,14 @@ struct RealModelApp: App {
     WindowGroup {
       ContentView()
         .environmentObject(store)
-        .frame(minWidth: 500, minHeight: 300)
+        .frame(minWidth: 600, minHeight: 350)
     }.commands {
       RunCommands(store: store)
     }
 
     Settings {
       SettingView()
-        .frame(minWidth: 500, minHeight: 300)
+        .frame(minWidth: 600, minHeight: 350)
     }
   }
 }

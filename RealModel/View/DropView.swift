@@ -34,7 +34,6 @@ struct DropView: View {
                 RunButton(progress: $progress)
               }
             }
-            .frame(minWidth: 800)
           if store.isProgressing {
             VStack {
               Text(verbatim: "Generating \(detailLevel)")
@@ -81,7 +80,7 @@ struct DropView: View {
           }
         }
       }
-    }.frame(minWidth: 500)
+    }.frame(minWidth: 600)
   }
 }
 
