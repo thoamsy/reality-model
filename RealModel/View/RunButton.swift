@@ -9,15 +9,16 @@ import SwiftUI
 import RealityKit
 
 struct RunButton: View {
+  @EnvironmentObject var store: Store
+
   var outputName = "model"
-  var progress: Binding<Double>
 
   @AppStorage("featureSensitivity") var featureSensitivity = PhotogrammetrySession.Configuration.FeatureSensitivity.normal
   @AppStorage("sampleOrdering") var sampleOrdering = PhotogrammetrySession.Configuration.SampleOrdering.unordered
   @AppStorage("detailLevel") var detailLevel = PhotogrammetrySession.Request.Detail.reduced
 
-  @Binding var folderURL: URL?
   @State private var canExport = false
+  @State private var maybeSession: PhotogrammetrySession?
 
   func sessionConfiguration() -> PhotogrammetrySession.Configuration {
     var configuration = PhotogrammetrySession.Configuration()
@@ -28,20 +29,15 @@ struct RunButton: View {
     return configuration
   }
 
-  @State private var maybeSession: PhotogrammetrySession?
-
-
-  init(folderURL: Binding<URL?>, progress: Binding<Double>) {
-    _folderURL = folderURL
-    self.progress = progress
-  }
 
   func resetProgress() {
-    progress.wrappedValue = 0
+    maybeSession = nil
+    store.progress = 0
+    store.isProgressing = false
   }
 
   func run() {
-    guard let url = folderURL else { return }
+    guard let url = store.folderURL else { return }
 
     do {
       let session = try PhotogrammetrySession(input: url, configuration: sessionConfiguration())
@@ -53,6 +49,7 @@ struct RunButton: View {
 
     guard let session = maybeSession else { return }
 
+    store.isProgressing = true
     let waiter = Task {
       do {
         for try await output in session.outputs {
@@ -64,16 +61,14 @@ struct RunButton: View {
               print("Error: ")
               print(request, error)
               resetProgress()
-              maybeSession = nil
               // Request encountered an error.
             case .requestComplete(let request, let result):
               print("complete, \(request), \(result)")
               resetProgress()
-              maybeSession = nil
               // RealityKit has finished processing a request.
             case .requestProgress(let request, let fractionComplete):
               print("requestProgress, \(request), \(fractionComplete)")
-              progress.wrappedValue = fractionComplete
+              store.progress = fractionComplete
               // Periodic progress update. Update UI here.
             case .inputComplete:
               print("input complete")
@@ -90,7 +85,6 @@ struct RunButton: View {
             case .processingCancelled:
               print("Cancel")
               resetProgress()
-              maybeSession = nil
             @unknown default:
               print("Do nothing")
           }
@@ -137,7 +131,7 @@ struct RunButton: View {
       onCompletion: { $0 }
     )
     .keyboardShortcut((maybeSession?.isProcessing ?? false) ? "S" : "R", modifiers: [.command])
-    .disabled(folderURL == nil)
+    .disabled(store.folderURL == nil)
   }
 }
 

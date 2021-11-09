@@ -11,48 +11,44 @@ import AVFoundation
 
 
 struct DropView: View {
-  @AppStorage("lastFolderURL") var folderURL: URL?
-  @State private var contentURLs: [URL]?
-  @State var isShow = false
-  @State private var progress = 0.0
-
-  //  init() {
-  //    if folderURL != nil {
-  //      contentURLs = ModelDirectoryDelegate.getFilesFromDirectoryURL(dirURL: folderURL!)
-  //    }
-  //  }
+  @EnvironmentObject var store: Store
+  @State var showFileImporter = false
 
   var body: some View {
     VStack {
-      if (contentURLs != nil) {
+      if (store.contentURLs != nil) {
         ZStack {
-          ThumbnailGrid(contentURLs: $contentURLs)
+          ThumbnailGrid(contentURLs: $store.contentURLs)
             .toolbar {
               HStack {
                 Button(role: .cancel, action: {
-                  contentURLs = nil
-                  folderURL = nil
+                  store.contentURLs = nil
+                  store.folderURL = nil
                 }) {
                   Image(systemName: "arrow.backward")
-                }.disabled(progress > 0)
-                RunButton(folderURL: $folderURL, progress: $progress)
+                }.disabled(store.isProgressing)
+                RunButton()
               }
-            }.frame(minWidth: 600)
-          if progress > 0 {
-            Rectangle().frame(width: .infinity, height: .infinity)
+            }
+            .frame(minWidth: 800)
+          if store.isProgressing {
+            Rectangle()
+              .frame(width: .infinity, height: .infinity)
               .background(Color.secondary)
               .opacity(0.4)
-            ProgressView(value: progress) {
-              Text("Loading: \(progress * 100, specifier: "%.2f")%")
+            ProgressView(value: store.progress) {
+              VStack {
+                Text("Task take long time, please be patient")
+                Text("Loading: \(store.progress * 100, specifier: "%.2f")%")
+              }
             }
             .progressViewStyle(CircularProgressViewStyle())
-//              .progressViewStyle(CustomCircularProgressViewStyle())
           }
         }
       } else {
         HStack {
           Button(action: {
-            isShow = true
+            showFileImporter = true
           }) {
             VStack {
               Image(systemName: "photo.on.rectangle.angled")
@@ -63,20 +59,18 @@ struct DropView: View {
             .frame(width: 256, height: 256)
           }
           .buttonStyle(.borderless)
-          .onDrop(of: [.fileURL], delegate: ModelDirectoryDelegate(contentURLs: $contentURLs, folderURL: $folderURL))
-          .fileImporter(isPresented: $isShow, allowedContentTypes: [.fileURL, .directory]) { result in
+          .onDrop(of: [.fileURL], delegate: ModelDirectoryDelegate(contentURLs: $store.contentURLs, folderURL: $store.folderURL))
+          .fileImporter(isPresented: $showFileImporter, allowedContentTypes: [.fileURL, .directory]) { result in
             switch result {
               case .success(let dirURL):
                 let result = ModelDirectoryDelegate.getFilesFromDirectoryURL(dirURL: dirURL)
 
-                if result.isEmpty {
-                  return
+                if let urls = result, !urls.isEmpty {
+                  store.folderURL = dirURL
+                  store.contentURLs = urls
                 }
-                folderURL = dirURL
-                contentURLs = result
-
-              case .failure:
-                return
+              case .failure(let error):
+                store.errorMessage = error.localizedDescription
             }
           }
         }
@@ -91,8 +85,10 @@ struct ModelDirectoryDelegate: DropDelegate {
 
   static let fileExtension = Set(["mp4", "png", "heic", "jpeg", "heif"])
 
-  static func getFilesFromDirectoryURL(dirURL: URL) -> [URL] {
-    let contents = try! FileManager.default.contentsOfDirectory(atPath: dirURL.path)
+  static func getFilesFromDirectoryURL(dirURL: URL) -> [URL]? {
+    let result = try? FileManager.default.contentsOfDirectory(atPath: dirURL.path)
+
+    guard let contents = result else { return nil }
 
     print(contents.map {  content in dirURL.appendingPathComponent(content) })
     return contents
@@ -108,8 +104,8 @@ struct ModelDirectoryDelegate: DropDelegate {
           return
         }
         let result = Self.getFilesFromDirectoryURL(dirURL: url)
-        if !result.isEmpty {
-          contentURLs = result
+        if let urls = result, !urls.isEmpty {
+          contentURLs = urls
           folderURL = url
         }
       }
@@ -134,25 +130,3 @@ struct DropView_Previews: PreviewProvider {
   }
 }
 
-
-struct CustomCircularProgressViewStyle: ProgressViewStyle {
-  func makeBody(configuration: Configuration) -> some View {
-    ZStack {
-      Circle()
-        .trim(from: 0.0, to: CGFloat(configuration.fractionCompleted ?? 0))
-        .stroke(Color.blue, style: StrokeStyle(lineWidth: 3, dash: [10, 5]))
-        .rotationEffect(.degrees(-90))
-        .frame(width: 200)
-
-      if let fractionCompleted = configuration.fractionCompleted {
-        Text(fractionCompleted < 1 ?
-             "Completed \(Int((configuration.fractionCompleted ?? 0) * 100))%"
-             : "Done!"
-        )
-          .fontWeight(.bold)
-          .foregroundColor(fractionCompleted < 1 ? .orange : .green)
-          .frame(width: 180)
-      }
-    }
-  }
-}
