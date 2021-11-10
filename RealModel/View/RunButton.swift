@@ -1,9 +1,9 @@
-//
-//  RunButton.swift
-//  RealModel
-//
-//  Created by yk on 2021/11/8.
-//
+  //
+  //  RunButton.swift
+  //  RealModel
+  //
+  //  Created by yk on 2021/11/8.
+  //
 
 import SwiftUI
 import RealityKit
@@ -43,6 +43,11 @@ struct RunButton: View {
   }
 
   func run() {
+    if isProgress {
+      maybeSession?.cancel()
+      return
+    }
+
     guard let url = store.folderURL else { return }
 
     do {
@@ -62,32 +67,32 @@ struct RunButton: View {
           switch output {
             case .processingComplete:
               canExport = true
-              // RealityKit has processed all requests.
+                // RealityKit has processed all requests.
             case .requestError(let request, let error):
               print("Error: ")
               print(request, error)
               resetProgress()
-              // Request encountered an error.
+                // Request encountered an error.
             case .requestComplete(let request, let result):
               print("complete, \(request), \(result)")
               resetProgress()
-              // RealityKit has finished processing a request.
+                // RealityKit has finished processing a request.
             case .requestProgress(let request, let fractionComplete):
               print("requestProgress, \(request), \(fractionComplete)")
               progress = fractionComplete
-              // Periodic progress update. Update UI here.
+                // Periodic progress update. Update UI here.
             case .inputComplete:
               print("input complete")
-//               Ingestion of images is complete and processing begins.
+                //               Ingestion of images is complete and processing begins.
             case .invalidSample(let id, let reason):
               print(id, reason)
-              // RealityKit deemed a sample invalid and didn't use it.
+                // RealityKit deemed a sample invalid and didn't use it.
             case .skippedSample(let id):
               print(id)
-              // RealityKit was unable to use a provided sample.
-              //              case .automaticDownsampling:
-              //                // RealityKit downsampled the input images because of
-              //                // resource constraints.
+                // RealityKit was unable to use a provided sample.
+                //              case .automaticDownsampling:
+                //                // RealityKit downsampled the input images because of
+                //                // resource constraints.
             case .processingCancelled:
               print("Cancel")
               resetProgress()
@@ -97,16 +102,16 @@ struct RunButton: View {
         }
       } catch {
         print("Output: ERROR = \(String(describing: error))")
-        // Handle error.
+          // Handle error.
       }
     }
 
     withExtendedLifetime((session, waiter)) {
       do {
-      let outputURL = URL(fileURLWithPath: fileName + ".usdz")
+        let outputURL = URL(fileURLWithPath: fileName + ".usdz")
 
-      let request = PhotogrammetrySession.Request.modelFile(url: outputURL, detail: detailLevel)
-      try session.process(requests: [request])
+        let request = PhotogrammetrySession.Request.modelFile(url: outputURL, detail: detailLevel)
+        try session.process(requests: [request])
       } catch {
         print("Process got error: \(String(describing: error))")
         maybeSession = nil
@@ -118,26 +123,65 @@ struct RunButton: View {
     "\(outputName)-\(detailLevel)"
   }
 
-  var body: some View {
-    Button(action: {
-      if isProgress {
-        maybeSession?.cancel()
-        return
-      }
-
-      run()
-    }) {
-      Label(isProgress ? "Stop" : "Run", systemImage: (maybeSession?.isProcessing ?? false) ? "stop.circle" : "play")
+  func iconName(level: PhotogrammetrySession.Request.Detail) -> String {
+    switch level {
+      case .preview:
+        return "circle.fill"
+      case .reduced:
+        return "circle.grid.2x1.fill"
+      case .medium:
+        return "circle.grid.2x2.fill"
+      case .full:
+        return "circle.hexagongrid.fill"
+      case .raw:
+        return "circle.grid.3x3.fill"
+      @unknown default:
+        return "circle.grid.2x1.fill"
     }
-    .fileExporter(
-      isPresented: $canExport,
-      document: USDZURLDocument(name: fileName),
-      contentType: .usdz,
-      defaultFilename: fileName,
-      onCompletion: { $0 }
-    )
-    .keyboardShortcut(isProgress ? "S" : "R", modifiers: [.command])
-    .disabled(store.folderURL == nil)
+  }
+
+  var allLevels: [String] {
+    PhotogrammetrySession.Request.Detail.allLevels
+  }
+
+  var buttonView: some View {
+    Group {
+      if isProgress {
+        Button {
+          maybeSession?.cancel()
+        } label: {
+          Label("Stop", systemImage: "stop.circle")
+        }
+      } else {
+        Menu {
+          Section {
+            ForEach(allLevels, id: \.self) { level in
+              Button {
+                detailLevel = PhotogrammetrySession.Request.Detail(stringLiteral: level)
+                run()
+              } label: {
+                Image(systemName: iconName(level: PhotogrammetrySession.Request.Detail(stringLiteral: level)))
+                Text("\(level.capitalized)")
+              }
+            }
+          }
+        } label: {
+          Label("Run", systemImage: "play")
+        }
+      }
+    }
+  }
+
+  var body: some View {
+    buttonView
+      .fileExporter(
+        isPresented: $canExport,
+        document: USDZURLDocument(name: fileName),
+        contentType: .usdz,
+        defaultFilename: fileName,
+        onCompletion: { $0 }
+      )
+      .disabled(store.folderURL == nil)
   }
 
   var isProgress: Bool {
@@ -145,8 +189,16 @@ struct RunButton: View {
   }
 }
 
-//struct RunButton_Previews: PreviewProvider {
-//    static var previews: some View {
-//        RunButton()
-//    }
-//}
+  //struct RunButton_Previews: PreviewProvider {
+  //    static var previews: some View {
+  //        RunButton()
+  //    }
+  //}
+
+extension PhotogrammetrySession.Request.Detail: ExpressibleByStringLiteral {
+  static var allLevels = ["preview", "reduced", "medium", "full", "raw"]
+
+  public init(stringLiteral value: StringLiteralType) {
+    self = Self(rawValue: Self.allLevels.firstIndex(of: value) ?? 0) ?? .preview
+  }
+}

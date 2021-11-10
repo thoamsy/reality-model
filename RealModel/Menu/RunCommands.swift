@@ -13,6 +13,7 @@ struct RunCommands: Commands {
   var body: some Commands {
     CommandMenu("Model") {
       RunButton(progress: .constant(0.0))
+//        .keyboardShortcut(store.isProgressing ? "S" : "R", modifiers: [.command])
         .environmentObject(store)
     }
   }

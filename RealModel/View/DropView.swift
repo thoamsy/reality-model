@@ -24,13 +24,15 @@ struct DropView: View {
         ZStack {
           ThumbnailGrid(contentURLs: $store.contentURLs)
             .toolbar {
-              HStack {
+              ToolbarItem(placement: .cancellationAction) {
                 Button(role: .cancel, action: {
                   store.contentURLs = nil
                   store.folderURL = nil
                 }) {
                   Image(systemName: "arrow.backward")
                 }.disabled(store.isProgressing)
+              }
+              ToolbarItem(placement: .primaryAction) {
                 RunButton(progress: $progress)
               }
             }

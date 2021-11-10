@@ -10,7 +10,7 @@ import RealityKit
 
 struct PhotogrammetrySessionSetting: View {
   @AppStorage("featureSensitivity") var featureSensitivity = PhotogrammetrySession.Configuration.FeatureSensitivity.normal
-  @AppStorage("sampleOrdering") var sampleOrdering = PhotogrammetrySession.Configuration.SampleOrdering.unordered
+  @AppStorage("sampleOrdering") var sampleOrdering = PhotogrammetrySession.Configuration.SampleOrdering.sequential
   @AppStorage("detailLevel") var detailLevel = PhotogrammetrySession.Request.Detail.reduced
 
   var featureSensitivityComment: String {
