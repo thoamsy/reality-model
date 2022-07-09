@@ -166,7 +166,7 @@ struct RunButton: View {
             }
           }
         } label: {
-          Label("Run", systemImage: "play")
+          Label("Run Model", systemImage: "arkit")
         }
       }
     }
